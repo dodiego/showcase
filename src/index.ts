@@ -14,8 +14,8 @@ process.on("unhandledRejection", (reason: Error) => {
 
 run()
   .then(async () => {
-    logger.info("Gracefully exiting")
     await typeorm.disconnect()
+    logger.info("graceful exit")
     process.exit(0)
   })
   .catch(async (e) => {

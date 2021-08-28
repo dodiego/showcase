@@ -11,7 +11,7 @@ export default class Tag {
   @Column()
   @Field()
   name: string
-  @ManyToMany(() => Note)
+  @ManyToMany(() => Note, (note) => note.tags, { cascade: false })
   @Field(() => [Note])
   notes: Note[]
 }

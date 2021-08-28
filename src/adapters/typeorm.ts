@@ -1,13 +1,9 @@
 import { Connection, createConnection } from "typeorm"
-import config from "../domain/config"
 
 let connection: Connection
 
 export async function init() {
-  connection = await createConnection({
-    url: config.databaseConnectionString,
-    type: "postgres",
-  })
+  connection = await createConnection()
   return connection
 }
 

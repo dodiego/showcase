@@ -35,8 +35,8 @@ process.on("unhandledRejection", (reason) => {
 });
 run()
     .then(async () => {
-    logger_1.default.info("Gracefully exiting");
     await typeorm.disconnect();
+    logger_1.default.info("graceful exit");
     process.exit(0);
 })
     .catch(async (e) => {

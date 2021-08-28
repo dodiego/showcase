@@ -1,17 +1,10 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.disconnect = exports.init = void 0;
 const typeorm_1 = require("typeorm");
-const config_1 = __importDefault(require("../domain/config"));
 let connection;
 async function init() {
-    connection = await (0, typeorm_1.createConnection)({
-        url: config_1.default.databaseConnectionString,
-        type: "postgres",
-    });
+    connection = await (0, typeorm_1.createConnection)();
     return connection;
 }
 exports.init = init;

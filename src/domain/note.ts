@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from "type-graphql"
-import { Entity, PrimaryColumn, Column, ManyToMany } from "typeorm"
+import { Entity, PrimaryColumn, Column, ManyToMany, JoinTable } from "typeorm"
 import Tag from "./tag"
 
 @Entity({ name: "notes" })
@@ -14,7 +14,8 @@ export default class Note {
   @Column()
   @Field()
   text: string
-  @ManyToMany(() => Tag)
+  @ManyToMany(() => Tag, (tag) => tag.notes, { cascade: false })
+  @JoinTable()
   @Field(() => [Tag])
   tags: Tag[]
 }
