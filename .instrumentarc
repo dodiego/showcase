@@ -1,0 +1,87 @@
+{
+  "sourceDirectory": "src",
+  "extensionsDirectory": "extensions",
+  "startFile": "index.js",
+  "packageManager": {
+    "name": "pnpm",
+    "addCommand": "add -D",
+    "removeCommand": "remove -D"
+  },
+  "packageJson": {
+    "name": "workplace",
+    "version": "0.0.1",
+    "scripts": {
+      "start": "node src/index.js"
+    },
+    "type": "module",
+    "repository": {
+      "type": "git"
+    },
+    "license": "MPL-2.0"
+  },
+  "extensions": {
+    "debug": {
+      "name": "debug"
+    },
+    "editor": {
+      "configFileName": "jsconfig.json",
+      "configFileContent": {
+        "compilerOptions": {
+          "checkJs": true,
+          "module": "esnext",
+          "target": "esnext",
+          "moduleResolution": "node"
+        },
+        "include": [
+          "src/**/*",
+          "undefined/**/*"
+        ],
+        "exclude": [
+          "node_modules"
+        ]
+      },
+      "name": "editor"
+    },
+    "formatter": {
+      "configFileName": ".prettierrc",
+      "configFileContent": {
+        "arrowParens": "always",
+        "printWidth": 80,
+        "semi": false,
+        "tabWidth": 2
+      },
+      "routines": {
+        "format": "npx prettier --write ."
+      },
+      "dependencies": [
+        "editor"
+      ],
+      "npmDependencies": [
+        "prettier"
+      ],
+      "name": "formatter"
+    },
+    "linter": {
+      "configFileName": ".eslintrc.json",
+      "configFileContent": {
+        "root": true,
+        "extends": [
+          "standard",
+          "prettier"
+        ]
+      },
+      "dependencies": [
+        "editor"
+      ],
+      "npmDependencies": [
+        "eslint",
+        "eslint-config-standard",
+        "eslint-plugin-promise",
+        "eslint-plugin-import",
+        "eslint-plugin-node",
+        "eslint-config-prettier"
+      ],
+      "name": "linter"
+    }
+  }
+}
