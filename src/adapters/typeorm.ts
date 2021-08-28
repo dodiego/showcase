@@ -13,3 +13,7 @@ export async function disconnect() {
   }
   return connection?.close()
 }
+
+export function getQueryBuilder() {
+  return connection.createQueryBuilder()
+}
