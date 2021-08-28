@@ -1,7 +1,4 @@
 {
   "root": true,
-  "extends": [
-    "standard",
-    "prettier"
-  ]
+  "extends": ["standard", "prettier"]
 }
