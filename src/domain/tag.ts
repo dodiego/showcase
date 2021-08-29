@@ -9,7 +9,7 @@ import {
 import { Entity, PrimaryColumn, ManyToMany, Column } from "typeorm"
 import Note from "./note"
 import DataLoader from "dataloader"
-import { getNotesFromTag } from "../dataloaders"
+import { getNotesFromTag } from "../core/dataloaders"
 
 @Entity()
 @ObjectType()

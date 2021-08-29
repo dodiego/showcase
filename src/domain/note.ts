@@ -8,7 +8,7 @@ import {
   Root,
 } from "type-graphql"
 import { Entity, PrimaryColumn, Column, ManyToMany, JoinTable } from "typeorm"
-import { getTagsFromNote } from "../dataloaders"
+import { getTagsFromNote } from "../core/dataloaders"
 import Tag from "./tag"
 import User from "./user"
 import { Resolver } from "type-graphql"

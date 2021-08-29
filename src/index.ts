@@ -4,7 +4,7 @@ import logger from "./adapters/logger"
 import { getSchema } from "./adapters/graphql"
 
 import express from "express"
-import config from "./config"
+import config from "./core/config"
 import getApolloServer from "./adapters/apollo"
 
 async function run() {

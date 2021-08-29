@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"
 import { getQueryBuilder } from "../adapters/typeorm"
 import User from "../domain/user"
 import logger from "../adapters/logger"
-import config from "../config"
+import config from "../core/config"
 
 @Resolver()
 export default class UserController {
@@ -28,6 +28,7 @@ export default class UserController {
     logger.info("User created")
     return true
   }
+
   @Mutation(() => String)
   async signin(
     @Arg("email", { nullable: false }) email: string,
@@ -43,7 +44,6 @@ export default class UserController {
       throw new Error(`Invalid user/password combination - email: ${email}`)
     }
 
-    logger.info(user)
     const isPasswordValid = await argon2.verify(user.password, password)
     if (!isPasswordValid) {
       throw new Error(`Invalid user/password combination - email: ${email}`)

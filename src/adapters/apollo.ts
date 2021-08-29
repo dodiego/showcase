@@ -1,7 +1,7 @@
 import { GraphQLSchema } from "graphql"
 import { ApolloServer } from "apollo-server-express"
 import jwt from "jsonwebtoken"
-import config from "../config"
+import config from "../core/config"
 
 export default function getApolloServer(schema: GraphQLSchema) {
   return new ApolloServer({

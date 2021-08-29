@@ -1,7 +1,7 @@
 import { Mutation, Query, Resolver, Arg, Authorized, Ctx } from "type-graphql"
 import logger from "../adapters/logger"
 import { getQueryBuilder, getRepository } from "../adapters/typeorm"
-import Context from "../context"
+import Context from "../core/context"
 import Note from "../domain/note"
 import Tag from "../domain/tag"
 
@@ -11,7 +11,6 @@ export default class NoteController {
   private readonly tagRepository = getRepository(Tag)
 
   @Mutation(() => String, { name: "addNote" })
-  @Authorized()
   async add(
     @Arg("title") title: string,
     @Arg("text") text: string,
@@ -31,7 +30,6 @@ export default class NoteController {
   }
 
   @Mutation(() => Boolean, { name: "updateNote" })
-  @Authorized()
   async put(@Arg("id") id: string, @Arg("newText") newText: string) {
     await getQueryBuilder()
       .update(Note)
@@ -43,7 +41,6 @@ export default class NoteController {
   }
 
   @Mutation(() => Boolean, { name: "deleteNote" })
-  @Authorized()
   async delete(@Arg("id") id: string) {
     await getQueryBuilder()
       .delete()
@@ -55,7 +52,6 @@ export default class NoteController {
   }
 
   @Mutation(() => Boolean, { name: "tagNote" })
-  @Authorized()
   async tag(@Arg("noteId") noteId: string, @Arg("tag") tagName: string) {
     const note = await this.noteRepository.findOne(noteId)
     if (!note) {
