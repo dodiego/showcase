@@ -20,14 +20,11 @@ export default class NoteController {
     const insertResult = await getQueryBuilder()
       .insert()
       .into(Note)
-      .values([
-        {
-          title,
-          text,
-          ownerId: context.userId,
-        },
-      ])
-      .returning(["id"])
+      .values({
+        title,
+        text,
+        ownerId: context.userId,
+      })
       .execute()
     logger.info("note created")
     return insertResult.identifiers[0].id
