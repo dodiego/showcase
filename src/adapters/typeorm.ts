@@ -1,4 +1,4 @@
-import { Connection, createConnection } from "typeorm"
+import { Connection, createConnection, EntityTarget } from "typeorm"
 
 let connection: Connection
 
@@ -16,4 +16,8 @@ export async function disconnect() {
 
 export function getQueryBuilder() {
   return connection.createQueryBuilder()
+}
+
+export function getRepository<T>(entity: EntityTarget<T>) {
+  return connection.getRepository(entity)
 }

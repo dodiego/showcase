@@ -1,20 +1,31 @@
 import "reflect-metadata"
+import { ApolloServer } from "apollo-server-express"
+import jwt from "jsonwebtoken"
 import * as typeorm from "./adapters/typeorm"
 import logger from "./adapters/logger"
 import { getSchema } from "./adapters/graphql"
-import { ApolloServer } from "apollo-server"
+
+import express from "express"
+import config from "./config"
 
 async function run() {
-  logger.info("connecting to database")
   await typeorm.init()
-  logger.info("database connected")
-
+  const app = express()
   const schema = await getSchema()
   const server = new ApolloServer({
     schema,
+    context: ({ req }) => {
+      if (req.headers.authorization) {
+        return jwt.verify(req.headers.authorization, config.secret)
+      }
+      return false
+    },
   })
-  const response = await server.listen()
-  logger.info(`Server listening at ${response.url}`)
+  await server.start()
+  server.applyMiddleware({ app, path: "/graphql" })
+  app.listen(config.serverPort, () => {
+    logger.info(`Server listening at port ${config.serverPort}`)
+  })
 }
 
 process.on("SIGINT", async () => {
