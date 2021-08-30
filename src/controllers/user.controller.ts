@@ -1,10 +1,10 @@
 import { Resolver, Arg, Mutation } from "type-graphql"
 import argon2 from "argon2"
 import jwt from "jsonwebtoken"
-import { getQueryBuilder } from "../adapters/typeorm"
-import User from "../domain/user"
-import logger from "../adapters/logger"
-import config from "../core/config"
+import { getQueryBuilder } from "../adapters/typeorm.adapter"
+import User from "../domain/user.domain"
+import logger from "../adapters/logger.adapter"
+import config from "../core/config.core"
 
 @Resolver()
 export default class UserController {

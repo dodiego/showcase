@@ -1,25 +1,15 @@
 import DataLoader from "dataloader"
-import {
-  Field,
-  ID,
-  ObjectType,
-  Authorized,
-  FieldResolver,
-  Root,
-} from "type-graphql"
+import { Field, ID, ObjectType, Root } from "type-graphql"
 import { Entity, PrimaryColumn, Column, ManyToMany, JoinTable } from "typeorm"
-import { getTagsFromNote } from "../core/dataloaders"
-import Tag from "./tag"
-import User from "./user"
-import { Resolver } from "type-graphql"
+import { getTagsFromNote } from "../cache/dataloaders.cache"
+import Tag from "./tag.domain"
+import User from "./user.domain"
 
 @Entity()
 @ObjectType()
-@Resolver(() => Note)
 export default class Note {
   @PrimaryColumn({ type: "uuid", default: () => "gen_random_uuid()" })
   @Field(() => ID)
-  @Authorized(["admin"])
   id: string
 
   @Column()
@@ -32,7 +22,7 @@ export default class Note {
 
   @ManyToMany(() => Tag, (tag) => tag.notes, { cascade: false })
   @JoinTable()
-  @FieldResolver(() => [Tag])
+  @Field(() => [Tag], { name: "tags" })
   tags(@Root() note: Note) {
     const tagLoader = new DataLoader<string, Tag[]>((keys) =>
       getTagsFromNote(keys)

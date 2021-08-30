@@ -1,9 +1,11 @@
-import { Mutation, Query, Resolver, Arg, Authorized, Ctx } from "type-graphql"
-import logger from "../adapters/logger"
-import { getQueryBuilder, getRepository } from "../adapters/typeorm"
-import Context from "../core/context"
-import Note from "../domain/note"
-import Tag from "../domain/tag"
+import { Mutation, Query, Resolver, Arg, Ctx, Authorized } from "type-graphql"
+import logger from "../adapters/logger.adapter"
+import { getQueryBuilder, getRepository } from "../adapters/typeorm.adapter"
+import Context from "../core/context.core"
+import Note from "../domain/note.domain"
+import Tag from "../domain/tag.domain"
+import { getUserPermissions } from "../auth/user.auth"
+import { checkPermissions } from "../auth/base.auth"
 
 @Resolver()
 export default class NoteController {
@@ -11,6 +13,7 @@ export default class NoteController {
   private readonly tagRepository = getRepository(Tag)
 
   @Mutation(() => String, { name: "addNote" })
+  @Authorized()
   async add(
     @Arg("title") title: string,
     @Arg("text") text: string,
@@ -30,7 +33,16 @@ export default class NoteController {
   }
 
   @Mutation(() => Boolean, { name: "updateNote" })
-  async put(@Arg("id") id: string, @Arg("newText") newText: string) {
+  @Authorized()
+  async put(
+    @Arg("id") id: string,
+    @Arg("newText") newText: string,
+    @Ctx() context: Context
+  ) {
+    const note = await getRepository(Note).findOne(id)
+    const permissions = getUserPermissions(context.userId)
+    checkPermissions(permissions, "update", note)
+
     await getQueryBuilder()
       .update(Note)
       .set({ text: newText })
@@ -41,7 +53,12 @@ export default class NoteController {
   }
 
   @Mutation(() => Boolean, { name: "deleteNote" })
-  async delete(@Arg("id") id: string) {
+  @Authorized()
+  async delete(@Arg("id") id: string, @Ctx() context: Context) {
+    const note = await getRepository(Note).findOne(id)
+    const permissions = getUserPermissions(context.userId)
+    checkPermissions(permissions, "delete", note)
+
     await getQueryBuilder()
       .delete()
       .from(Note)
@@ -52,11 +69,19 @@ export default class NoteController {
   }
 
   @Mutation(() => Boolean, { name: "tagNote" })
-  async tag(@Arg("noteId") noteId: string, @Arg("tag") tagName: string) {
+  @Authorized()
+  async tag(
+    @Arg("noteId") noteId: string,
+    @Arg("tagName") tagName: string,
+    @Ctx() context: Context
+  ) {
     const note = await this.noteRepository.findOne(noteId)
     if (!note) {
       throw new Error(`Invalid note id: ${noteId}`)
     }
+
+    const permissions = getUserPermissions(context.userId)
+    checkPermissions(permissions, "delete", note)
 
     const tag = await this.tagRepository.findOne({ name: tagName })
 
@@ -69,6 +94,7 @@ export default class NoteController {
   }
 
   @Query(() => [Note], { name: "findNotes" })
+  @Authorized()
   async find(@Arg("filter") filter: string) {
     logger.info("querying notes")
     return getQueryBuilder()

@@ -1,11 +1,11 @@
 import "reflect-metadata"
-import * as typeorm from "./adapters/typeorm"
-import logger from "./adapters/logger"
-import { getSchema } from "./adapters/graphql"
+import * as typeorm from "./adapters/typeorm.adapter"
+import logger from "./adapters/logger.adapter"
+import { getSchema } from "./adapters/graphql.adapter"
 
 import express from "express"
-import config from "./core/config"
-import getApolloServer from "./adapters/apollo"
+import config from "./core/config.core"
+import getApolloServer from "./adapters/apollo.adapter"
 
 async function run() {
   await typeorm.init()
