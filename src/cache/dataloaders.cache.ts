@@ -1,6 +1,6 @@
 import { getQueryBuilder } from "../adapters/typeorm.adapter"
-import Tag from "../domain/tag.domain"
-import Note from "../domain/note.domain"
+import Tag from "../core/structures/tag.structure"
+import Note from "../core/structures/note.structure"
 
 export async function getNotesFromTag(tagIds: readonly string[]) {
   return Promise.all(

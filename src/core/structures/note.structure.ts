@@ -1,9 +1,9 @@
 import DataLoader from "dataloader"
 import { Field, ID, ObjectType, Root } from "type-graphql"
 import { Entity, PrimaryColumn, Column, ManyToMany, JoinTable } from "typeorm"
-import { getTagsFromNote } from "../cache/dataloaders.cache"
-import Tag from "./tag.domain"
-import User from "./user.domain"
+import { getTagsFromNote } from "../../cache/dataloaders.cache"
+import Tag from "./tag.structure"
+import User from "./user.structure"
 
 @Entity()
 @ObjectType()

@@ -1,4 +1,5 @@
 .env
+.idea
 ormconfig.json
 dist
 node_modules

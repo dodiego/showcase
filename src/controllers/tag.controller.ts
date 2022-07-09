@@ -1,6 +1,6 @@
 import { Resolver, Mutation, Arg, Authorized } from "type-graphql"
 import { getQueryBuilder } from "../adapters/typeorm.adapter"
-import Tag from "../domain/tag.domain"
+import Tag from "../core/structures/tag.structure"
 
 @Resolver()
 export default class TagController {

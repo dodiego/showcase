@@ -8,7 +8,6 @@ export function getUserPermissions(userId: string) {
     can("update", "note", userOwnsNote)
     can("tag", "note", userOwnsNote)
     can("read", "note", userOwnsNote)
-
     can("create", "tag")
   })
 }

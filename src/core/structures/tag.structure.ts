@@ -1,8 +1,8 @@
 import { Field, ID, ObjectType, Root } from "type-graphql"
 import { Entity, PrimaryColumn, ManyToMany, Column } from "typeorm"
-import Note from "./note.domain"
+import Note from "./note.structure"
 import DataLoader from "dataloader"
-import { getNotesFromTag } from "../cache/dataloaders.cache"
+import { getNotesFromTag } from "../../cache/dataloaders.cache"
 
 @Entity()
 @ObjectType()
