@@ -1,0 +1,11 @@
+version: '3.1'
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_USER: personal_showcase
+      POSTGRES_PASSWORD: personal_showcase_password
+      POSTGRES_DB: personal_showcase_db
+    restart: always
+    ports:
+      - '5433:5432'

@@ -2,7 +2,7 @@ import { Resolver, Arg, Mutation } from "type-graphql"
 import argon2 from "argon2"
 import jwt from "jsonwebtoken"
 import { getQueryBuilder } from "../adapters/typeorm.adapter"
-import User from "../core/structures/user.structure"
+import UserStructure from "../core/structures/user.structure"
 import logger from "../adapters/logger.adapter"
 import config from "../core/config.core"
 
@@ -16,7 +16,7 @@ export default class UserController {
     const hashedPassword = await argon2.hash(password)
     await getQueryBuilder()
       .insert()
-      .into(User)
+      .into(UserStructure)
       .values([
         {
           email,
@@ -35,7 +35,7 @@ export default class UserController {
     @Arg("password", { nullable: false }) password: string
   ) {
     const result = await getQueryBuilder()
-      .from(User, "user")
+      .from(UserStructure, "user")
       .where("user.email = :email", { email })
       .execute()
     const user = result[0]

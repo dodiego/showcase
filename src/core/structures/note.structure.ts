@@ -1,37 +1,10 @@
-import DataLoader from "dataloader"
-import { Field, ID, ObjectType, Root } from "type-graphql"
-import { Entity, PrimaryColumn, Column, ManyToMany, JoinTable } from "typeorm"
-import { getTagsFromNote } from "../../cache/dataloaders.cache"
-import Tag from "./tag.structure"
-import User from "./user.structure"
+import { TagStructure } from "./tag.structure"
+import { UserStructure } from "./user.structure"
+import { BaseStructure } from "./base.structure"
 
-@Entity()
-@ObjectType()
-export default class Note {
-  @PrimaryColumn({ type: "uuid", default: () => "gen_random_uuid()" })
-  @Field(() => ID)
-  id: string
-
-  @Column()
-  @Field()
+export type NoteStructure = BaseStructure & {
   title: string
-
-  @Column()
-  @Field()
   text: string
-
-  @ManyToMany(() => Tag, (tag) => tag.notes, { cascade: false })
-  @JoinTable()
-  @Field(() => [Tag], { name: "tags" })
-  tags(@Root() note: Note) {
-    const tagLoader = new DataLoader<string, Tag[]>((keys) =>
-      getTagsFromNote(keys)
-    )
-    return tagLoader.load(note.id)
-  }
-
-  @Column()
-  ownerId: string
-
-  owner: User
+  tags?: TagStructure[]
+  owner: UserStructure
 }

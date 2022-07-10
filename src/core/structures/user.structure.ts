@@ -1,13 +1,8 @@
-import { Entity, Column, PrimaryColumn } from "typeorm"
+import { NoteStructure } from "./note.structure"
 
-@Entity()
-export default class User {
-  @PrimaryColumn({ type: "uuid", default: () => "gen_random_uuid()" })
+export type UserStructure = {
   id: string
-
-  @Column({ unique: true })
   email: string
-
-  @Column()
   password: string
+  notes: NoteStructure[]
 }
